@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lalem ❤️ Eden</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    margin: 0;
+    font-family: Georgia, serif;
+    background: linear-gradient(black, #1a0000, #330000);
+    color: #ffcccc;
+    text-align: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* PASSWORD SCREEN */
+#passwordScreen {
+    position: fixed;
+    top:0; left:0;
+    width:100vw; height:100vh;
+    background: linear-gradient(to bottom, #330000, black);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:9999;
+}
+
+#passwordScreen h2 {
+    color: red;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px red;
+}
+
+#passwordScreen input {
+    padding:10px 20px;
+    font-size:18px;
+    border-radius:8px;
+    border:none;
+    margin-bottom:15px;
+}
+
+#passwordScreen button {
+    padding:12px 25px;
+    font-size:18px;
+    border-radius:8px;
+    border:none;
+    background:red;
+    color:white;
+    cursor:pointer;
+    box-shadow: 0 0 15px red;
+}
+
+#passwordHint {
+    color:#ff9999;
+    font-size:14px;
+    font-style:italic;
+    margin-top:10px;
+}
+
+/* FLOATING HEARTS */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    color: red;
+    font-size: 20px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+.container {
+    padding: 20px;
+}
+
+h1 {
+    color: red;
+    font-size: 34px;
+    text-shadow: 0 0 15px red;
+}
+
+button {
+    padding: 12px 25px;
+    background: crimson;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 0 15px red;
+    margin: 10px;
+}
+
+.letter {
+    max-width: 90%;
+    margin: 20px auto;
+    font-size: 20px;
+    line-height: 1.8;
+    white-space: pre-line;
+    min-height: 150px;
+    text-shadow: 0 0 5px #ff6666;
+}
+
+.gallery {
+    position: relative;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.gallery img {
+    width: 180px;
+    max-width: 45vw;
+    margin: 10px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px red;
+    position: relative;
+    z-index: 2;
+}
+
+.gallery p {
+    color: #ffcccc;
+    font-style: italic;
+    margin: 5px 0 15px 0;
+    z-index: 2;
+    position: relative;
+}
+
+#galleryOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div id="passwordScreen">
+    <h2>Enter Our Special Day</h2>
+    <input type="password" id="passInput" placeholder="MMDD (hint: the day we met)" onkeyup="if(event.key==='Enter'){checkPassword();}">
+    <button onclick="checkPassword()">Enter</button>
+    <div id="passwordHint">Hint: the day we met ❤️</div>
+</div>
+
+<!-- MAIN SITE -->
+<div class="container" id="mainSite" style="display:none;">
+    <h1>Lalem ❤️ Eden</h1>
+    <h2 id="dayTitle"></h2>
+
+    <div class="letter" id="letter"></div>
+
+    <button onclick="nextLetter()">Next Day 💌</button>
+
+    <div class="gallery">
+        <h2>Our Story ❤️</h2>
+        <div id="galleryOverlay"></div>
+
+        <img src="photo1.jpg">
+        <p>Before us… you were already special.</p>
+
+        <img src="photo2.jpg">
+        <p>This is where we became us.</p>
+
+        <img src="photo3.jpg">
+        <p>The way I see you… forever.</p>
+    </div>
+</div>
+
+<audio autoplay loop>
+  <source src="my_music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// PASSWORD PROTECTION
+const PASSWORD = "0331"; // March 31
+function checkPassword() {
+    const input = document.getElementById("passInput").value;
+    if(input === PASSWORD){
+        document.getElementById("passwordScreen").style.display = "none";
+        document.getElementById("mainSite").style.display = "block";
+        showLetter();
+    } else {
+        alert("Incorrect! Try the day we met ❤️");
+    }
+}
+
+// ❤️ FLOATING HEARTS
+function createHeart() {
+    const heart = document.createElement("div");
+heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createHeart, 300);
+
+// ⌨️ TYPING EFFECT
+function typeText(text, element, speed = 30) {
+    element.innerHTML = "";
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
+}
+
+// 💌 LETTERS
+let currentDay = 1;
+function generateLetter(day){
+    if(day == 1) return My Eden,\n\nWe met in school…\n\nBut nothing about you ever felt ordinary.\n\nYou became everything to me.\n\n— Lalem ❤️;
+    if(day == 31) return The day I kissed you…\n\nI felt goosebumps I will never forget.\n\nThat moment stayed inside me.\n\n— Lalem ❤️;
+    if(day == 365) return My love,\n\n365 days later…\n\nAnd I still choose you.\n\nSo tell me…\n\nWill you stay with me forever?\n\n— Lalem ❤️;
+
+    const deep = [
+        "You became my peace without even trying.",
+        "I don’t just love you… I feel safe with you.",
+        "You are the best part of my life.",
+        "I never get tired of you.",
+        "You are everything I didn’t know I needed."
+    ];
+
+    const tease = [
+        "You bully me with love… and I love it.",
+        "You make my heart weak in the best way.",
+        "You drive me crazy… but I want only you.",
+        "You make me smile without trying.",
+        "You are my favorite problem."
+    ];
+
+    return My Eden,\n\n${deep[day % deep.length]}\n\n${tease[day % tease.length]}\n\nAnd somehow…\n\nI fall for you again every day.\n\n— Lalem ❤️;
+}
+
+// DISPLAY LETTER
+function showLetter(){
+    document.getElementById("dayTitle").innerText = "Day " + currentDay;
+    typeText(generateLetter(currentDay), document.getElementById("letter"));
+}
+
+// NEXT DAY BUTTON
+function nextLetter(){
+    currentDay++;
+    if(currentDay > 365) currentDay = 1;
+    showLetter();
+    if(currentDay === 365) finalSurprise();
+}
+
+// 🎉 FINAL SURPRISE
+function finalSurprise(){
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = 0;
+    overlay.style.left = 0;
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
+    overlay.style.backgroundColor = "rgba(0,0,0,0.97)";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+    overlay.style.color = "#ffcccc";
+    overlay.style.fontFamily = "Georgia, serif";
+    overlay.style.fontSize = "40px";
+    overlay.style.textAlign = "center";
+    overlay.style.opacity = 0;
+    overlay.style.transition = "opacity 2s ease";
+    overlay.style.zIndex = 9999;
+
+    overlay.innerHTML = `
+        💍<br><br>
+        <span style="font-size:50px;">You are my forever.</span><br><br>
+        <button id="yesBtn" style="
+            padding: 15px 35px; 
+            font-size: 24px; 
+            background: crimson; 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer;
+            box-shadow: 0 0 20px red;
+        ">
+            I say YES ❤️
+        </button>
+    `;
+
+    document.body.appendChild(overlay);
+    setTimeout(()=> overlay.style.opacity = 1, 100);
+
+    // Floating hearts
+    setInterval(()=>{
+        const heart = document.createElement("div");
+        heart.innerHTML = "❤️";
+        heart.style.position = "fixed";
+        heart.style.top = Math.random()*100 + "vh";
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.fontSize = (Math.random()*25+15) + "px";
+        heart.style.opacity = 0.8;
+        heart.style.zIndex = 10000;
+        overlay.appendChild(heart);
+        setTimeout(()=> heart.remove(), 4000);
+    }, 300);
+
+    // Confetti
+    for(let i=0;i<100;i++){
+        const confetti = document.createElement("div");
+        confetti.innerHTML = "🎊";
+confetti.style.position = "fixed";
+        confetti.style.fontSize = (Math.random()*30+20)+"px";
+        confetti.style.left = Math.random()*100+"vw";
+        confetti.style.top = Math.random()*-50+"vh";
+        confetti.style.animation = confettiFall ${Math.random()*3+2}s linear infinite;
+        overlay.appendChild(confetti);
+    }
+
+    const style = document.createElement("style");
+    style.innerHTML = `
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity:1; }
+            100% { transform: translateY(120vh) rotate(360deg); opacity:0; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    document.getElementById("yesBtn").onclick = ()=> overlay.remove();
+}
+
+// Floating hearts behind gallery
+function galleryHearts() {
+    const galleryOverlay = document.getElementById("galleryOverlay");
+    if(!galleryOverlay) return;
+
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.style.position = "absolute";
+    heart.style.top = Math.random()*100 + "%";
+    heart.style.left = Math.random()*100 + "%";
+    heart.style.fontSize = (Math.random()*20 + 10)+"px";
+    heart.style.opacity = 0.6;
+    heart.style.transition = "transform 6s linear, opacity 6s linear, color 6s linear";
+    heart.style.color = hsl(${Math.random()*20},100%,70%);
+    galleryOverlay.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.style.transform = "translateY(-150px)";
+        heart.style.opacity = 0;
+    }, 50);
+
+    setTimeout(()=> heart.remove(), 6000);
+}
+setInterval(galleryHearts, 400);
+</script>
+</body>
+</html>
